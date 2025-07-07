@@ -63,14 +63,23 @@ for msg in st.session_state.chat_history:
         )
 
 # Input box at the bottom
-st.text_input(
-    "Ask something:",
-    key="user_input",
-    on_change=submit_question,
-    placeholder="Type your question and press Enter...",
-)
+cols = st.columns([10, 1])
+with cols[0]:
+    st.text_input(
+        "Ask something:",
+        key="user_input",
+        on_change=submit_question,
+        placeholder="Type your question and press Enter or click Submit...",
+        label_visibility="collapsed"
+    )
+with cols[1]:
+    if st.button("➤"):
+        submit_question()
 
-# Button to clear conversation
-st.markdown("---")
-if st.button("🔄 Clear Conversation"):
-    st.session_state.chat_history = []
+# Divider and Clear Conversation button
+if st.session_state.chat_history:
+    st.markdown("---")
+    if st.button("🔄 Clear Conversation"):
+        st.session_state.chat_history.clear()
+        st.rerun()
+
