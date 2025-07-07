@@ -1,5 +1,6 @@
 import streamlit as st
 import boto3
+import os
 
 st.set_page_config(page_title="Chat with Documents")
 
@@ -21,7 +22,7 @@ def submit_question():
     st.session_state.chat_history.append({"role": "user", "content": query})
 
     # Call Bedrock Agent
-    bedrock_agent = boto3.client("bedrock-agent-runtime", region_name="ap-southeast-2")
+    bedrock_agent = boto3.client("bedrock-agent-runtime", aws_access_key_id=os.getenv("AWS_ACCESS_KEY_ID"),aws_secret_access_key=os.getenv("AWS_SECRET_ACCESS_KEY"),region_name=os.getenv("AWS_DEFAULT_REGION", "ap-southeast-2"))
     response = bedrock_agent.invoke_agent(
         agentId="XBVIAGTPOF",
         agentAliasId="NBU7DCILKB",
